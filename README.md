@@ -194,7 +194,7 @@ VITE_API_URL=http://localhost:5000
    - `PORT` - 5000
 4. Deploy
 
-### Frontend Deployment (Vercel/Netlify)
+### Frontend Deployment (Vercel/Netlify/Render)
 
 1. Push code to GitHub
 2. Import project in Vercel/Netlify
