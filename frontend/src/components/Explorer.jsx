@@ -2,22 +2,37 @@ import { useEffect, useState } from "react";
 import api from "../api/axios";
 import "./Explorer.css";
 
-export default function Explorer() {
+export default function Explorer({ transactions, fetchTransactions }) {
   const [list, setList] = useState([]);
   const [search, setSearch] = useState("");
 
-  const fetchTx = async () => {
-    try {
-      const res = await api.get(`/transactions?search=${search}`);
-      setList(res.data);
-    } catch (err) {
-      console.error("Search failed:", err);
+  // Use transactions from props when available, otherwise fetch internally
+  useEffect(() => {
+    if (transactions && transactions.length > 0) {
+      setList(transactions);
+    } else {
+      fetchTransactions();
+    }
+  }, [transactions]);
+
+  // Search functionality - filters from the transactions list
+  const handleSearch = async () => {
+    if (search.trim()) {
+      try {
+        const res = await api.get(`/transactions?search=${search}`);
+        setList(res.data);
+      } catch (err) {
+        console.error("Search failed:", err);
+      }
+    } else {
+      // If search is empty, use all transactions from props
+      if (transactions) {
+        setList(transactions);
+      } else {
+        fetchTransactions();
+      }
     }
   };
-
-  useEffect(() => {
-    fetchTx();
-  }, []);
 
   return (
     <div className="explorer-container">
@@ -30,7 +45,7 @@ export default function Explorer() {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
         />
-        <button className="explorer-button" onClick={fetchTx}>
+        <button className="explorer-button" onClick={handleSearch}>
           Search
         </button>
       </div>

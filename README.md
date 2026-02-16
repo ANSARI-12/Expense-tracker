@@ -4,8 +4,8 @@ A full-stack expense tracking application built with the MERN stack (MongoDB, Ex
 
 ## 🚀 Live Demo
 
-- **Frontend**: [https://bellcorp-expense-tracker.vercel.app](https://bellcorp-expense-tracker.vercel.app)
-- **Backend API**: [https://bellcorp-expense-tracker-api.onrender.com](https://bellcorp-expense-tracker-api.onrender.com)
+- **Frontend**: [https://expense-tracker-frontend-9870.onrender.com](https://expense-tracker-frontend-9870.onrender.com)
+- **Backend API**: [https://expense-tracker-backend-ekke.onrender.com](https://expense-tracker-backend-ekke.onrender.com)
 
 ## 📋 Table of Contents
 

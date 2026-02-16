@@ -3,8 +3,11 @@ import api from "../api/axios";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 
-export default function Dashboard({ onLogout }) {
-  const [data, setData] = useState([]);
+export default function Dashboard({
+  onLogout,
+  transactions,
+  fetchTransactions,
+}) {
   const [editingId, setEditingId] = useState(null);
   const [editForm, setEditForm] = useState({
     title: "",
@@ -22,20 +25,8 @@ export default function Dashboard({ onLogout }) {
   });
   const navigate = useNavigate();
 
-  const fetchData = () => {
-    api
-      .get("/transactions")
-      .then((res) => {
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.error("Error fetching transactions:", err);
-      });
-  };
-
-  useEffect(() => {
-    fetchData();
-  }, []);
+  // Use transactions from props
+  const data = transactions || [];
 
   const total = data.reduce((a, b) => a + Number(b.amount), 0);
 
@@ -56,7 +47,8 @@ export default function Dashboard({ onLogout }) {
     try {
       await api.post("/transactions", formData);
       setFormData({ title: "", amount: "", category: "", date: "", notes: "" });
-      fetchData();
+      // Use the shared fetch function to refresh all components
+      fetchTransactions();
     } catch (err) {
       console.error("Error adding transaction:", err);
     }
@@ -66,7 +58,8 @@ export default function Dashboard({ onLogout }) {
     if (window.confirm("Are you sure you want to delete this transaction?")) {
       try {
         await api.delete(`/transactions/${id}`);
-        fetchData();
+        // Use the shared fetch function to refresh all components
+        fetchTransactions();
       } catch (err) {
         console.error("Error deleting transaction:", err);
         alert("Failed to delete transaction");
@@ -100,7 +93,8 @@ export default function Dashboard({ onLogout }) {
     try {
       await api.put(`/transactions/${id}`, editForm);
       setEditingId(null);
-      fetchData();
+      // Use the shared fetch function to refresh all components
+      fetchTransactions();
     } catch (err) {
       console.error("Error updating transaction:", err);
       alert("Failed to update transaction");
